@@ -321,6 +321,14 @@
             transform: scale(0.95);
         }
 
+        /* 每部连载各自的当前提醒状态 */
+        .interaction-current {
+            display: block;
+            margin-top: 6px;
+            font-size: 11px;
+            color: #aaa;
+        }
+
         .bottom-placeholder {
             height: 20px;
         }
@@ -764,6 +772,186 @@
             font-size: 13px;
             padding: 8px 12px;
         }
+
+        /* ===== 导航栏图标按钮组 ===== */
+        .nav-right-group {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .nav-icon-btn {
+            width: 34px;
+            height: 34px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 19px;
+            color: #333;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: background 0.2s, transform 0.15s;
+        }
+
+        .nav-icon-btn:hover {
+            background: rgba(0, 0, 0, 0.05);
+        }
+
+        .nav-icon-btn:active {
+            transform: scale(0.9);
+        }
+
+        /* ===== 使用指引弹窗 ===== */
+        .guide-card {
+            width: calc(100% - 48px);
+            max-width: 330px;
+            background: #fff;
+            border-radius: 20px;
+            padding: 24px 22px 20px;
+            margin: auto;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.25);
+            transform: scale(0.9);
+            opacity: 0;
+            transition: transform 0.28s cubic-bezier(0.34, 1.4, 0.64, 1), opacity 0.2s;
+            max-height: 86%;
+            overflow-y: auto;
+        }
+
+        .guide-card::-webkit-scrollbar {
+            display: none;
+        }
+
+        .modal-overlay.active .guide-card {
+            transform: scale(1);
+            opacity: 1;
+        }
+
+        .guide-head {
+            text-align: center;
+            margin-bottom: 16px;
+        }
+
+        .guide-head-icon {
+            width: 52px;
+            height: 52px;
+            margin: 0 auto 10px;
+            border-radius: 16px;
+            background: linear-gradient(135deg, #4D9B94, #7bc4b8);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            font-size: 24px;
+            box-shadow: 0 6px 16px rgba(77, 155, 148, 0.35);
+        }
+
+        .guide-head-title {
+            font-size: 18px;
+            font-weight: 700;
+            color: #222;
+        }
+
+        .guide-head-sub {
+            font-size: 12px;
+            color: #999;
+            margin-top: 4px;
+        }
+
+        .guide-list {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-bottom: 16px;
+        }
+
+        .guide-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            padding: 12px;
+            border-radius: 14px;
+            background: #f8f8fa;
+        }
+
+        .guide-item.guide-highlight {
+            background: rgba(77, 155, 148, 0.08);
+            border: 1.5px dashed rgba(77, 155, 148, 0.5);
+        }
+
+        .guide-item-icon {
+            flex-shrink: 0;
+            width: 34px;
+            height: 34px;
+            border-radius: 10px;
+            background: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 15px;
+            color: #555;
+            box-shadow: 0 1px 4px rgba(0, 0, 0, 0.06);
+        }
+
+        .guide-highlight .guide-item-icon {
+            color: #4D9B94;
+        }
+
+        .guide-item-text {
+            flex: 1;
+            min-width: 0;
+            font-size: 12.5px;
+            color: #777;
+            line-height: 1.6;
+        }
+
+        .guide-item-text b {
+            display: block;
+            font-size: 14px;
+            color: #222;
+            margin-bottom: 2px;
+        }
+
+        .guide-item-text em {
+            display: block;
+            margin-top: 4px;
+            font-style: normal;
+            color: #4D9B94;
+            font-weight: 600;
+        }
+
+        .guide-ok-btn {
+            width: 100%;
+            border: none;
+            background: #4D9B94;
+            color: #fff;
+            font-size: 15px;
+            font-weight: 600;
+            padding: 12px;
+            border-radius: 24px;
+            cursor: pointer;
+            box-shadow: 0 4px 14px rgba(77, 155, 148, 0.3);
+            transition: transform 0.15s;
+        }
+
+        .guide-ok-btn:active {
+            transform: scale(0.97);
+        }
+
+        .guide-never {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            margin-top: 12px;
+            font-size: 12px;
+            color: #999;
+            cursor: pointer;
+            user-select: none;
+        }
+
+        .guide-never input {
+            accent-color: #4D9B94;
+        }
     </style>
 </head>
 
@@ -788,8 +976,13 @@
                         <i class="fa-solid fa-chevron-left"></i>
                     </div>
                     <div class="nav-title">全部连载</div>
-                    <div class="nav-right" id="createNewBtn">
-                        <i class="fa-solid fa-plus"></i>
+                    <div class="nav-right nav-right-group">
+                        <span class="nav-icon-btn" id="guideHelpBtn" title="使用指引">
+                            <i class="fa-solid fa-circle-question"></i>
+                        </span>
+                        <span class="nav-icon-btn" id="createNewBtn" title="创建新连载">
+                            <i class="fa-solid fa-plus"></i>
+                        </span>
                     </div>
                 </div>
 
@@ -819,6 +1012,7 @@
                             <button class="interaction-settings-btn" data-title="《明天》">
                                 <i class="fa-regular fa-bell"></i> 互动设置
                             </button>
+                            <span class="interaction-current">当前提醒：系统默认</span>
                         </div>
                         <i class="fa-solid fa-chevron-right si-arrow"></i>
                     </div>
@@ -842,6 +1036,7 @@
                             <button class="interaction-settings-btn" data-title="《星屑收集手册》">
                                 <i class="fa-regular fa-bell"></i> 互动设置
                             </button>
+                            <span class="interaction-current">当前提醒：系统默认</span>
                         </div>
                         <i class="fa-solid fa-chevron-right si-arrow"></i>
                     </div>
@@ -862,6 +1057,7 @@
                             <button class="interaction-settings-btn" data-title="《夏日终曲》">
                                 <i class="fa-regular fa-bell"></i> 互动设置
                             </button>
+                            <span class="interaction-current">当前提醒：系统默认</span>
                         </div>
                         <i class="fa-solid fa-chevron-right si-arrow"></i>
                     </div>
@@ -1049,10 +1245,105 @@
                 </div>
             </div>
         </div>
+
+        <!-- ===== 使用指引弹窗（首次进入自动弹出） ===== -->
+        <div class="modal-overlay" id="guideModal">
+            <div class="guide-card">
+                <div class="guide-head">
+                    <div class="guide-head-icon">
+                        <i class="fa-solid fa-book-open-reader"></i>
+                    </div>
+                    <div class="guide-head-title">全部连载 · 使用指引</div>
+                    <div class="guide-head-sub">在这里管理你的所有连载作品</div>
+                </div>
+                <div class="guide-list">
+                    <div class="guide-item">
+                        <div class="guide-item-icon"><i class="fa-solid fa-plus"></i></div>
+                        <div class="guide-item-text">
+                            <b>创建新连载</b>
+                            点击右上角「+」，选择封面、填写标题、简介和标签即可创建。
+                        </div>
+                    </div>
+                    <div class="guide-item">
+                        <div class="guide-item-icon"><i class="fa-solid fa-book-open"></i></div>
+                        <div class="guide-item-text">
+                            <b>打开连载</b>
+                            点击任意连载卡片，进入作品的章节管理页面。
+                        </div>
+                    </div>
+                    <div class="guide-item">
+                        <div class="guide-item-icon"><i class="fa-solid fa-bell"></i></div>
+                        <div class="guide-item-text">
+                            <b>“有新互动”角标</b>
+                            封面右上角出现粉色角标，说明有读者互动达到了你设置的提醒条件。
+                        </div>
+                    </div>
+                    <div class="guide-item guide-highlight">
+                        <div class="guide-item-icon"><i class="fa-solid fa-sliders"></i></div>
+                        <div class="guide-item-text">
+                            <b>互动提醒设置（重点）</b>
+                            点击每张卡片下方的「互动设置」，可配置读者消息的提醒门槛：系统默认、打赏+评论、100字以上长评，还能自定义勾选互动类型并设置关键词。
+                            <em>每部连载的设置独立保存，互不影响。</em>
+                        </div>
+                    </div>
+                </div>
+                <button class="guide-ok-btn" id="guideOkBtn">知道了</button>
+                <label class="guide-never">
+                    <input type="checkbox" id="guideNeverShow" checked>
+                    下次进入不再自动弹出（可点右上角「?」随时查看）
+                </label>
+            </div>
+        </div>
     </div>
 
     <script>
         document.addEventListener('DOMContentLoaded', function () {
+            // ===== 使用指引 =====
+            const guideModal = document.getElementById('guideModal');
+            const GUIDE_KEY = 'lofter_all_serials_guide_seen';
+
+            function openGuide() {
+                guideModal.classList.add('active');
+            }
+            function closeGuide() {
+                guideModal.classList.remove('active');
+            }
+
+            // 首次进入自动弹出
+            try {
+                if (!localStorage.getItem(GUIDE_KEY)) {
+                    setTimeout(openGuide, 350);
+                }
+            } catch (e) {
+                setTimeout(openGuide, 350);
+            }
+
+            // “知道了”：勾选了不再提示则记住
+            const guideOkBtn = document.getElementById('guideOkBtn');
+            if (guideOkBtn) {
+                guideOkBtn.addEventListener('click', function () {
+                    const never = document.getElementById('guideNeverShow');
+                    if (never && never.checked) {
+                        try { localStorage.setItem(GUIDE_KEY, '1'); } catch (e) { }
+                    }
+                    closeGuide();
+                });
+            }
+            // 点击遮罩关闭
+            if (guideModal) {
+                guideModal.addEventListener('click', function (e) {
+                    if (e.target === guideModal) closeGuide();
+                });
+            }
+            // 导航栏“?”随时重新查看
+            const guideHelpBtn = document.getElementById('guideHelpBtn');
+            if (guideHelpBtn) {
+                guideHelpBtn.addEventListener('click', function (e) {
+                    e.stopPropagation();
+                    openGuide();
+                });
+            }
+
             // 返回连载中心
             const navBack = document.getElementById('navBack');
             if (navBack) {
@@ -1136,19 +1427,62 @@
                 });
             }
 
-            // ===== 互动设置弹窗 =====
+            // ===== 互动设置弹窗（每部连载独立状态，互不级联） =====
             const interactionModal = document.getElementById('interactionModal');
             const interactionOptions = document.getElementById('interactionOptions');
-            let interactionTargetTitle = '';
+            const customChecks = document.getElementById('customChecks');
+            const customKeyword = document.getElementById('customKeyword');
+            const optionLabels = {
+                'default': '系统默认',
+                'tip_comment': '打赏+评论',
+                'long_comment': '100字以上评论',
+                'custom': '自定义提醒'
+            };
+            // 每部连载各自保存一份设置
+            const interactionStateMap = {};
+            let currentInteractionKey = '';
 
-            // 点击"互动设置"按钮，打开弹窗
+            function getInteractionState(key) {
+                if (!interactionStateMap[key]) {
+                    interactionStateMap[key] = { value: 'default', types: [], keyword: '' };
+                }
+                return interactionStateMap[key];
+            }
+
+            // 把某部连载的设置恢复到弹窗 UI 上
+            function applyStateToModal(state) {
+                // 门槛选项
+                interactionOptions.querySelectorAll('.option-row').forEach(row => {
+                    row.classList.toggle('active', row.dataset.value === state.value);
+                });
+                // 自定义多选
+                customChecks.querySelectorAll('.check-chip').forEach(chip => {
+                    const input = chip.querySelector('input');
+                    const on = state.types.indexOf(input.value) !== -1;
+                    input.checked = on;
+                    chip.classList.toggle('checked', on);
+                });
+                // 关键词
+                customKeyword.value = state.keyword;
+            }
+
+            // 从弹窗 UI 读取当前设置
+            function readStateFromModal() {
+                const active = interactionOptions.querySelector('.option-row.active');
+                return {
+                    value: active ? active.dataset.value : 'default',
+                    types: Array.from(customChecks.querySelectorAll('input:checked')).map(i => i.value),
+                    keyword: customKeyword.value.trim()
+                };
+            }
+
+            // 点击"互动设置"按钮，打开弹窗（只载入该连载自己的设置）
             document.querySelectorAll('.interaction-settings-btn').forEach(btn => {
                 btn.addEventListener('click', function (e) {
                     e.stopPropagation();
-                    interactionTargetTitle = this.dataset.title || '';
-                    // 更新弹窗标题
-                    const modalTitle = interactionModal.querySelector('.modal-title');
-                    modalTitle.textContent = '互动提醒 · ' + interactionTargetTitle;
+                    currentInteractionKey = this.dataset.title || '';
+                    interactionModal.querySelector('.modal-title').textContent = '互动提醒 · ' + currentInteractionKey;
+                    applyStateToModal(getInteractionState(currentInteractionKey));
                     interactionModal.classList.add('active');
                 });
             });
@@ -1157,7 +1491,6 @@
             if (interactionOptions) {
                 interactionOptions.querySelectorAll('.option-row').forEach(row => {
                     row.addEventListener('click', function (e) {
-                        // 点击自定义内部的 chip/input 时不切换行选中
                         if (e.target.closest('.custom-checks') || e.target.closest('.custom-input-row')) return;
                         interactionOptions.querySelectorAll('.option-row').forEach(r => r.classList.remove('active'));
                         this.classList.add('active');
@@ -1166,20 +1499,17 @@
             }
 
             // 自定义多选 chip 样式同步
-            const customChecks = document.getElementById('customChecks');
             if (customChecks) {
                 customChecks.querySelectorAll('.check-chip').forEach(chip => {
-                    const input = chip.querySelector('input');
-                    // 初始同步
-                    if (input.checked) chip.classList.add('checked');
                     chip.addEventListener('click', function () {
+                        const input = chip.querySelector('input');
                         input.checked = !input.checked;
                         chip.classList.toggle('checked', input.checked);
                     });
                 });
             }
 
-            // 关闭弹窗
+            // 关闭弹窗（取消不保存，下次打开仍是该连载上次保存的设置）
             const interactionCancel = document.getElementById('interactionCancel');
             if (interactionCancel) {
                 interactionCancel.addEventListener('click', function () {
@@ -1194,32 +1524,40 @@
                 });
             }
 
-            // 保存设置
+            // 保存设置（只写回当前这部连载）
             const interactionSubmit = document.getElementById('interactionSubmit');
             if (interactionSubmit) {
                 interactionSubmit.addEventListener('click', function () {
-                    const active = interactionOptions.querySelector('.option-row.active');
-                    if (!active) return;
-                    const value = active.dataset.value;
-                    const labels = {
-                        'default': '系统默认',
-                        'tip_comment': '打赏+评论',
-                        'long_comment': '100字以上评论',
-                        'custom': '自定义提醒'
-                    };
-                    if (value === 'custom') {
-                        const checkedTypes = Array.from(customChecks.querySelectorAll('input:checked')).map(i => i.parentElement.querySelector('span').textContent);
-                        const keyword = document.getElementById('customKeyword').value.trim();
-                        if (checkedTypes.length === 0) {
-                            alert('请至少勾选一个互动类型');
-                            return;
-                        }
-                        let msg = interactionTargetTitle + ' 的互动提醒已设为：自定义（' + checkedTypes.join('、') + '）';
-                        if (keyword) msg += '\n关键词：' + keyword;
-                        alert(msg);
-                    } else {
-                        alert(interactionTargetTitle + ' 的互动提醒已设为：' + labels[value]);
+                    const state = readStateFromModal();
+                    if (state.value === 'custom' && state.types.length === 0) {
+                        alert('请至少勾选一个互动类型');
+                        return;
                     }
+                    interactionStateMap[currentInteractionKey] = state;
+
+                    // 更新该卡片上的当前设置提示
+                    const btn = document.querySelector('.interaction-settings-btn[data-title="' + currentInteractionKey + '"]');
+                    if (btn) {
+                        const status = btn.parentElement.querySelector('.interaction-current');
+                        if (status) {
+                            let text = optionLabels[state.value];
+                            if (state.value === 'custom') {
+                                const typeNames = Array.from(customChecks.querySelectorAll('input:checked'))
+                                    .map(i => i.parentElement.querySelector('span').textContent);
+                                text = '自定义（' + typeNames.join('、') + '）';
+                            }
+                            status.textContent = '当前提醒：' + text;
+                        }
+                    }
+
+                    let msg = currentInteractionKey + ' 的互动提醒已设为：' + optionLabels[state.value];
+                    if (state.value === 'custom') {
+                        const typeNames = Array.from(customChecks.querySelectorAll('input:checked'))
+                            .map(i => i.parentElement.querySelector('span').textContent);
+                        msg = currentInteractionKey + ' 的互动提醒已设为：自定义（' + typeNames.join('、') + '）';
+                        if (state.keyword) msg += '\n关键词：' + state.keyword;
+                    }
+                    alert(msg);
                     interactionModal.classList.remove('active');
                 });
             }

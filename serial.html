@@ -390,7 +390,7 @@
         .author-list .author-info {
             display: flex;
             flex-direction: row;
-            align-items: center;
+            align-items: flex-start;
             gap: 5px;
             flex: 1;
             min-width: 0;
@@ -403,25 +403,27 @@
             font-weight: 600;
             color: #222;
             flex-shrink: 0;
+            line-height: 1.5;
         }
 
         .author-list .author-message {
             font-size: 12px;
             color: #777;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
+            line-height: 1.5;
             flex: 1 1 auto;
             min-width: 0;
-            display: flex;
-            align-items: center;
-            gap: 3px;
+            /* 卡片内最多显示两行，超出截断，不越出卡片 */
+            display: -webkit-box;
+            -webkit-box-orient: vertical;
+            -webkit-line-clamp: 2;
+            overflow: hidden;
+            word-break: break-word;
         }
 
         .author-list .author-message i {
             font-size: 10px;
             color: #bbb;
-            flex-shrink: 0;
+            margin-right: 3px;
         }
 
         .author-list .author-message .msg-highlight {
@@ -659,6 +661,196 @@
                 margin-left: 6px;
             }
         }
+
+        /* ===== 导航栏帮助按钮 ===== */
+        .nav-icon-btn {
+            width: 34px;
+            height: 34px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 19px;
+            color: #333;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: background 0.2s, transform 0.15s;
+        }
+
+        .nav-icon-btn:hover {
+            background: rgba(0, 0, 0, 0.05);
+        }
+
+        .nav-icon-btn:active {
+            transform: scale(0.9);
+        }
+
+        /* ===== 使用指引弹窗 ===== */
+        .modal-overlay {
+            position: absolute;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.4);
+            z-index: 200;
+            display: flex;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.25s ease;
+        }
+
+        .modal-overlay.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .guide-card {
+            width: calc(100% - 48px);
+            max-width: 330px;
+            background: #fff;
+            border-radius: 20px;
+            padding: 24px 22px 20px;
+            margin: auto;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.25);
+            transform: scale(0.9);
+            opacity: 0;
+            transition: transform 0.28s cubic-bezier(0.34, 1.4, 0.64, 1), opacity 0.2s;
+            max-height: 86%;
+            overflow-y: auto;
+        }
+
+        .guide-card::-webkit-scrollbar {
+            display: none;
+        }
+
+        .modal-overlay.active .guide-card {
+            transform: scale(1);
+            opacity: 1;
+        }
+
+        .guide-head {
+            text-align: center;
+            margin-bottom: 16px;
+        }
+
+        .guide-head-icon {
+            width: 52px;
+            height: 52px;
+            margin: 0 auto 10px;
+            border-radius: 16px;
+            background: linear-gradient(135deg, #4D9B94, #7bc4b8);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            font-size: 24px;
+            box-shadow: 0 6px 16px rgba(77, 155, 148, 0.35);
+        }
+
+        .guide-head-title {
+            font-size: 18px;
+            font-weight: 700;
+            color: #222;
+        }
+
+        .guide-head-sub {
+            font-size: 12px;
+            color: #999;
+            margin-top: 4px;
+        }
+
+        .guide-list {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-bottom: 16px;
+        }
+
+        .guide-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            padding: 12px;
+            border-radius: 14px;
+            background: #f8f8fa;
+        }
+
+        .guide-item.guide-highlight {
+            background: rgba(77, 155, 148, 0.08);
+            border: 1.5px dashed rgba(77, 155, 148, 0.5);
+        }
+
+        .guide-item-icon {
+            flex-shrink: 0;
+            width: 34px;
+            height: 34px;
+            border-radius: 10px;
+            background: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 15px;
+            color: #555;
+            box-shadow: 0 1px 4px rgba(0, 0, 0, 0.06);
+        }
+
+        .guide-highlight .guide-item-icon {
+            color: #4D9B94;
+        }
+
+        .guide-item-text {
+            flex: 1;
+            min-width: 0;
+            font-size: 12.5px;
+            color: #777;
+            line-height: 1.6;
+        }
+
+        .guide-item-text b {
+            display: block;
+            font-size: 14px;
+            color: #222;
+            margin-bottom: 2px;
+        }
+
+        .guide-item-text em {
+            display: block;
+            margin-top: 4px;
+            font-style: normal;
+            color: #4D9B94;
+            font-weight: 600;
+        }
+
+        .guide-ok-btn {
+            width: 100%;
+            border: none;
+            background: #4D9B94;
+            color: #fff;
+            font-size: 15px;
+            font-weight: 600;
+            padding: 12px;
+            border-radius: 24px;
+            cursor: pointer;
+            box-shadow: 0 4px 14px rgba(77, 155, 148, 0.3);
+            transition: transform 0.15s;
+        }
+
+        .guide-ok-btn:active {
+            transform: scale(0.97);
+        }
+
+        .guide-never {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            margin-top: 12px;
+            font-size: 12px;
+            color: #999;
+            cursor: pointer;
+            user-select: none;
+        }
+
+        .guide-never input {
+            accent-color: #4D9B94;
+        }
     </style>
 </head>
 
@@ -683,7 +875,11 @@
                         <i class="fa-solid fa-chevron-left"></i>
                     </div>
                     <div class="nav-title">连载中心</div>
-                    <div class="nav-right"></div>
+                    <div class="nav-right">
+                        <span class="nav-icon-btn" id="guideHelpBtn" title="使用指引">
+                            <i class="fa-solid fa-circle-question"></i>
+                        </span>
+                    </div>
                 </div>
 
                 <!-- ===== 我的连载 ===== -->
@@ -740,9 +936,9 @@
                             class="fa-solid fa-chevron-right"></i></button>
                 </div>
 
-                <!-- ===== 作者互动 ===== -->
+                <!-- ===== 作者回复（你追更的作者对你的回复） ===== -->
                 <div class="section-label">
-                    作者互动
+                    作者回复
                     <span class="badge-new">新增1条</span>
                 </div>
                 <div class="author-list">
@@ -753,20 +949,20 @@
                         <div class="author-info">
                             <span class="author-name">南风</span>
                             <span class="author-message">
-                                <i class="fa-regular fa-comment"></i>
-                                回复了你的评论：<span class="msg-highlight">“感谢长评~明天更新”</span>
+                                <i class="fa-solid fa-reply"></i>
+                                回复了你在《雨停之后》的评论：<span class="msg-highlight">“感谢长评~明天更新”</span>
                             </span>
                         </div>
                     </div>
                 </div>
-                <!-- 作者互动 - 查看全部 -->
+                <!-- 作者回复 - 查看全部 -->
                 <div class="view-all" id="viewAllAuthors">
                     查看全部 <i class="fa-solid fa-chevron-right"></i>
                 </div>
 
-                <!-- ===== 收到评论 ===== -->
+                <!-- ===== 精选互动（读者在你发布长文下的互动，经提醒门槛过滤） ===== -->
                 <div class="section-label">
-                    新增长评
+                    精选互动
                     <span class="badge-new">新增2条</span>
                 </div>
                 <div class="author-list">
@@ -777,13 +973,13 @@
                         <div class="author-info">
                             <span class="author-name">白川</span>
                             <span class="author-message">
-                                <i class="fa-regular fa-comment"></i>
-                                评论了你的连载 <span class="msg-highlight">《明天》：“写得太好了，蹲更新！”</span>
+                                <i class="fa-solid fa-pen-nib"></i>
+                                发表 128 字长评于《明天》：<span class="msg-highlight">“一口气追到第15章，人物太细腻了，催更！”</span>
                             </span>
                         </div>
                     </div>
                 </div>
-                <!-- 收到评论 - 查看全部 -->
+                <!-- 精选互动 - 查看全部 -->
                 <div class="view-all" id="viewAllReaders">
                     查看全部 <i class="fa-solid fa-chevron-right"></i>
                 </div>
@@ -815,11 +1011,102 @@
                     <span>我的</span>
                 </div>
             </div>
+
+            <!-- ===== 使用指引弹窗（首次进入自动弹出） ===== -->
+            <div class="modal-overlay" id="guideModal">
+                <div class="guide-card">
+                    <div class="guide-head">
+                        <div class="guide-head-icon">
+                            <i class="fa-solid fa-book-open-reader"></i>
+                        </div>
+                        <div class="guide-head-title">连载中心 · 使用指引</div>
+                        <div class="guide-head-sub">你的连载创作与阅读消息都在这里</div>
+                    </div>
+                    <div class="guide-list">
+                        <div class="guide-item">
+                            <div class="guide-item-icon"><i class="fa-solid fa-feather-pointed"></i></div>
+                            <div class="guide-item-text">
+                                <b>我的连载</b>
+                                展示你的创作更新进度。点击「管理连载」进入全部连载，可创建新作品、为每部作品单独设置互动提醒门槛。
+                            </div>
+                        </div>
+                        <div class="guide-item">
+                            <div class="guide-item-icon"><i class="fa-solid fa-book-open-reader"></i></div>
+                            <div class="guide-item-text">
+                                <b>继续阅读</b>
+                                展示你追更作品的阅读进度与最近更新。点击「全部追更」查看完整追更列表。
+                            </div>
+                        </div>
+                        <div class="guide-item">
+                            <div class="guide-item-icon"><i class="fa-solid fa-reply"></i></div>
+                            <div class="guide-item-text">
+                                <b>作者回复</b>
+                                你追更的作者回复了你在其作品下的评论，会第一时间在这里提醒你。
+                            </div>
+                        </div>
+                        <div class="guide-item guide-highlight">
+                            <div class="guide-item-icon"><i class="fa-solid fa-pen-nib"></i></div>
+                            <div class="guide-item-text">
+                                <b>精选互动（重点）</b>
+                                读者在你发布的连载、长文下的互动消息，已经过设置的提醒门槛过滤。
+                                <em>帮你过滤水评打扰，只提醒真正重要的读者反馈。</em>
+                            </div>
+                        </div>
+                    </div>
+                    <button class="guide-ok-btn" id="guideOkBtn">知道了</button>
+                    <label class="guide-never">
+                        <input type="checkbox" id="guideNeverShow" checked>
+                        下次进入不再自动弹出（可点右上角「?」随时查看）
+                    </label>
+                </div>
+            </div>
         </div>
     </div>
 
     <script>
         document.addEventListener('DOMContentLoaded', function () {
+            // ===== 使用指引（首次进入自动弹出） =====
+            const guideModal = document.getElementById('guideModal');
+            const GUIDE_KEY = 'lofter_serial_guide_seen';
+
+            function openGuide() {
+                guideModal.classList.add('active');
+            }
+            function closeGuide() {
+                guideModal.classList.remove('active');
+            }
+
+            try {
+                if (!localStorage.getItem(GUIDE_KEY)) {
+                    setTimeout(openGuide, 350);
+                }
+            } catch (e) {
+                setTimeout(openGuide, 350);
+            }
+
+            const guideOkBtn = document.getElementById('guideOkBtn');
+            if (guideOkBtn) {
+                guideOkBtn.addEventListener('click', function () {
+                    const never = document.getElementById('guideNeverShow');
+                    if (never && never.checked) {
+                        try { localStorage.setItem(GUIDE_KEY, '1'); } catch (e) { }
+                    }
+                    closeGuide();
+                });
+            }
+            if (guideModal) {
+                guideModal.addEventListener('click', function (e) {
+                    if (e.target === guideModal) closeGuide();
+                });
+            }
+            const guideHelpBtn = document.getElementById('guideHelpBtn');
+            if (guideHelpBtn) {
+                guideHelpBtn.addEventListener('click', function (e) {
+                    e.stopPropagation();
+                    openGuide();
+                });
+            }
+
             // 返回
             const navBack = document.getElementById('navBack');
             if (navBack) {

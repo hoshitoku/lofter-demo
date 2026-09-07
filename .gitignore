@@ -1,0 +1,23 @@
+# ===== 日志与临时文件 =====
+*.log
+debug.log
+*.tmp
+*.bak
+*.swp
+
+# ===== 编辑器 / IDE =====
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+
+# ===== 操作系统 =====
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# ===== 依赖与构建（预留，当前为纯静态站） =====
+node_modules/
+dist/
+build/
+.cache/

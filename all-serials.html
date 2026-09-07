@@ -1,0 +1,1250 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>全部连载 - 乐乎</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="serial.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* ===== 重置/覆盖原有样式，与连载中心保持一致 ===== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'PingFang SC', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+            background: linear-gradient(135deg, #e8dff5 0%, #fce4ec 50%, #e0f7fa 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            overflow-x: hidden;
+        }
+
+        .phone-frame {
+            width: 390px;
+            height: 844px;
+            background: #000;
+            border-radius: 50px;
+            padding: 12px;
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.3), 0 0 0 2px #333;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .phone-notch {
+            position: absolute;
+            top: 12px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 120px;
+            height: 28px;
+            background: #000;
+            border-radius: 0 0 18px 18px;
+            z-index: 100;
+        }
+
+        .screen {
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(180deg, #f5eeff 0%, #fff5f8 30%, #fff9fc 60%, #f0faff 100%);
+            border-radius: 40px;
+            overflow: hidden;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .status-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 14px 30px 6px;
+            font-size: 14px;
+            font-weight: 600;
+            color: #333;
+            flex-shrink: 0;
+        }
+
+        .status-icons {
+            display: flex;
+            gap: 5px;
+            font-size: 12px;
+            align-items: center;
+        }
+
+        .status-icons i {
+            margin-left: 4px;
+        }
+
+        .page-content {
+            flex: 1;
+            overflow-y: auto;
+            overflow-x: hidden;
+            -webkit-overflow-scrolling: touch;
+            padding-bottom: 80px;
+        }
+
+        .page-content::-webkit-scrollbar {
+            display: none;
+        }
+
+        /* 导航栏 */
+        .nav-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 20px 10px;
+            flex-shrink: 0;
+        }
+
+        .nav-back {
+            font-size: 20px;
+            color: #333;
+            cursor: pointer;
+            padding: 4px 8px;
+            border-radius: 50%;
+            transition: background 0.2s;
+        }
+
+        .nav-back:hover {
+            background: rgba(0, 0, 0, 0.05);
+        }
+
+        .nav-title {
+            font-size: 18px;
+            font-weight: 700;
+            color: #222;
+        }
+
+        .nav-right {
+            font-size: 20px;
+            color: #333;
+            cursor: pointer;
+            padding: 4px 8px;
+            border-radius: 50%;
+            transition: background 0.2s;
+        }
+
+        .nav-right:hover {
+            background: rgba(0, 0, 0, 0.05);
+        }
+
+        /* 标题区域 */
+        .section-label {
+            display: flex;
+            align-items: center;
+            padding: 0 16px 10px;
+            font-size: 15px;
+            font-weight: 700;
+            color: #333;
+        }
+
+        .section-label .serial-count {
+            font-size: 12px;
+            font-weight: 500;
+            color: #999;
+            margin-left: 8px;
+        }
+
+        /* ===== 连载列表项 ===== */
+        .serial-item {
+            position: relative;
+            margin: 0 16px 12px;
+            padding: 14px;
+            background: #fff;
+            border-radius: 16px;
+            box-shadow: 0 2px 12px rgba(0, 0, 0, 0.04);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            border: 1px solid rgba(0, 0, 0, 0.03);
+            cursor: pointer;
+            transition: transform 0.12s, box-shadow 0.12s;
+        }
+
+        .serial-item:active {
+            transform: scale(0.98);
+            box-shadow: 0 1px 4px rgba(0, 0, 0, 0.06);
+        }
+
+        .si-cover {
+            flex-shrink: 0;
+            width: 64px;
+            height: 64px;
+            border-radius: 12px;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 26px;
+            color: #fff;
+        }
+
+        .si-cover-wrap {
+            position: relative;
+            flex-shrink: 0;
+        }
+
+        /* 粉色互动徽标 */
+        .badge-new {
+            flex-shrink: 0;
+            display: inline-block;
+            background: #ff6b9d;
+            color: #fff;
+            font-size: 11px;
+            font-weight: 600;
+            padding: 1px 10px;
+            border-radius: 30px;
+            line-height: 1.6;
+            letter-spacing: 0.3px;
+        }
+
+        /* 悬挂在封面右上角的徽标 */
+        .cover-badge {
+            position: absolute;
+            top: -6px;
+            right: -12px;
+            z-index: 6;
+            font-size: 10px;
+            padding: 2px 8px;
+            border: 2px solid #fff;
+            box-shadow: 0 2px 8px rgba(255, 107, 157, 0.35);
+        }
+
+        .si-body {
+            flex: 1;
+            min-width: 0;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .si-title-row {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .si-title {
+            font-size: 16px;
+            font-weight: 700;
+            color: #222;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .si-tag {
+            flex-shrink: 0;
+            font-size: 10px;
+            font-weight: 600;
+            padding: 1px 8px;
+            border-radius: 20px;
+            line-height: 1.6;
+        }
+
+        .si-tag.ongoing {
+            background: rgba(77, 166, 148, 0.12);
+            color: #4DA694;
+        }
+
+        .si-tag.done {
+            background: #f0f0f0;
+            color: #999;
+        }
+
+        .si-tag.draft {
+            background: rgba(245, 158, 11, 0.12);
+            color: #f59e0b;
+        }
+
+        .si-meta {
+            font-size: 12px;
+            color: #999;
+            margin-top: 5px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .si-meta i {
+            font-size: 10px;
+            margin-right: 3px;
+        }
+
+        .si-arrow {
+            flex-shrink: 0;
+            color: #ccc;
+            font-size: 12px;
+            padding: 4px;
+        }
+
+        /* 互动设置按钮 */
+        .interaction-settings-btn {
+            align-self: flex-start;
+            margin-top: 8px;
+            background: transparent;
+            border: 1.5px solid #e0c3fc;
+            color: #9b72cf;
+            font-size: 12px;
+            font-weight: 600;
+            padding: 4px 14px;
+            border-radius: 20px;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            transition: all 0.2s ease;
+            white-space: nowrap;
+        }
+
+        .interaction-settings-btn i {
+            font-size: 11px;
+        }
+
+        .interaction-settings-btn:hover {
+            background: #9b72cf;
+            color: #fff;
+            border-color: #9b72cf;
+        }
+
+        .interaction-settings-btn:active {
+            transform: scale(0.95);
+        }
+
+        .bottom-placeholder {
+            height: 20px;
+        }
+
+        /* ===== 底部导航 ===== */
+        .bottom-nav {
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            padding: 6px 10px 16px;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-top: 1px solid rgba(0, 0, 0, 0.05);
+            flex-shrink: 0;
+        }
+
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 2px;
+            color: #999;
+            font-size: 11px;
+            cursor: pointer;
+            transition: color 0.2s;
+            flex: 1;
+        }
+
+        .nav-item i {
+            font-size: 22px;
+        }
+
+        .nav-item.active {
+            color: #222;
+        }
+
+        .nav-item.active i {
+            font-weight: 900;
+        }
+
+        .center-btn {
+            position: relative;
+        }
+
+        .plus-circle {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            background: #222;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            font-size: 22px;
+            box-shadow: 0 4px 12px rgba(34, 34, 34, 0.4);
+            margin-top: -20px;
+            transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+            cursor: pointer;
+        }
+
+        .plus-circle:active {
+            transform: scale(0.9) rotate(90deg);
+        }
+
+        /* ===== 适配小屏 ===== */
+        @media (max-width: 430px) {
+            body {
+                padding: 0;
+                background: linear-gradient(135deg, #e8dff5 0%, #fce4ec 50%, #e0f7fa 100%);
+            }
+
+            .phone-frame {
+                width: 100vw;
+                height: 100vh;
+                border-radius: 0;
+                padding: 0;
+                box-shadow: none;
+            }
+
+            .phone-notch {
+                display: none;
+            }
+
+            .screen {
+                border-radius: 0;
+            }
+
+            .si-cover {
+                width: 56px;
+                height: 56px;
+                font-size: 22px;
+            }
+
+            .si-title {
+                font-size: 15px;
+            }
+
+            .si-meta {
+                font-size: 11px;
+                gap: 8px;
+            }
+        }
+
+        /* ===== 创建连载弹窗 ===== */
+        .modal-overlay {
+            position: absolute;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.4);
+            z-index: 200;
+            display: flex;
+            align-items: flex-end;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.25s ease;
+        }
+
+        .modal-overlay.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .modal-sheet {
+            width: 100%;
+            max-height: 85%;
+            background: #fff;
+            border-radius: 20px 20px 0 0;
+            padding: 8px 20px 28px;
+            transform: translateY(100%);
+            transition: transform 0.3s cubic-bezier(0.32, 1.28, 0.64, 1);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .modal-overlay.active .modal-sheet {
+            transform: translateY(0);
+        }
+
+        .modal-handle {
+            width: 36px;
+            height: 4px;
+            background: #ddd;
+            border-radius: 4px;
+            margin: 0 auto 12px;
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-bottom: 14px;
+            border-bottom: 1px solid #f0f0f0;
+            margin-bottom: 16px;
+        }
+
+        .modal-cancel {
+            font-size: 14px;
+            color: #999;
+            cursor: pointer;
+        }
+
+        .modal-title {
+            font-size: 17px;
+            font-weight: 700;
+            color: #222;
+        }
+
+        .modal-submit {
+            font-size: 14px;
+            font-weight: 600;
+            color: #4DA694;
+            cursor: pointer;
+        }
+
+        .modal-submit:active {
+            opacity: 0.6;
+        }
+
+        .modal-body {
+            overflow-y: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        .modal-body::-webkit-scrollbar {
+            display: none;
+        }
+
+        .form-row {
+            margin-bottom: 18px;
+        }
+
+        .form-label {
+            display: block;
+            font-size: 14px;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 8px;
+        }
+
+        .form-optional {
+            font-size: 12px;
+            font-weight: 400;
+            color: #bbb;
+            margin-left: 4px;
+        }
+
+        .form-input {
+            width: 100%;
+            border: 1.5px solid #eee;
+            border-radius: 10px;
+            padding: 10px 14px;
+            font-size: 14px;
+            color: #333;
+            outline: none;
+            transition: border-color 0.2s;
+            font-family: inherit;
+        }
+
+        .form-input:focus {
+            border-color: #4DA694;
+        }
+
+        .form-textarea {
+            width: 100%;
+            border: 1.5px solid #eee;
+            border-radius: 10px;
+            padding: 10px 14px;
+            font-size: 14px;
+            color: #333;
+            outline: none;
+            resize: none;
+            transition: border-color 0.2s;
+            font-family: inherit;
+            line-height: 1.5;
+        }
+
+        .form-textarea:focus {
+            border-color: #4DA694;
+        }
+
+        /* 封面选择 */
+        .cover-picker {
+            display: flex;
+            gap: 10px;
+            overflow-x: auto;
+            padding-bottom: 4px;
+        }
+
+        .cover-picker::-webkit-scrollbar {
+            display: none;
+        }
+
+        .cover-option {
+            flex-shrink: 0;
+            width: 52px;
+            height: 52px;
+            border-radius: 10px;
+            cursor: pointer;
+            border: 3px solid transparent;
+            transition: border-color 0.2s, transform 0.15s;
+            position: relative;
+        }
+
+        .cover-option:active {
+            transform: scale(0.92);
+        }
+
+        .cover-option.active {
+            border-color: #4DA694;
+        }
+
+        .cover-option.active::after {
+            content: '\f00c';
+            font-family: 'Font Awesome 6 Free';
+            font-weight: 900;
+            position: absolute;
+            inset: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            font-size: 16px;
+            text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+        }
+
+        /* 标签选择 */
+        .tag-picker {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .tag-chip {
+            font-size: 13px;
+            padding: 5px 16px;
+            border-radius: 20px;
+            background: #f5f5f5;
+            color: #666;
+            cursor: pointer;
+            transition: all 0.2s;
+            user-select: none;
+        }
+
+        .tag-chip.active {
+            background: rgba(77, 166, 148, 0.12);
+            color: #4DA694;
+            font-weight: 600;
+        }
+
+        .tag-chip:active {
+            transform: scale(0.94);
+        }
+
+        /* ===== 互动设置弹窗 ===== */
+        .option-row {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            padding: 14px 0;
+            border-bottom: 1px solid #f5f5f5;
+            cursor: pointer;
+            transition: background 0.15s;
+        }
+
+        .option-row:last-child {
+            border-bottom: none;
+        }
+
+        .option-radio {
+            flex-shrink: 0;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            border: 2px solid #ccc;
+            margin-top: 2px;
+            position: relative;
+            transition: border-color 0.2s;
+        }
+
+        .option-row.active .option-radio {
+            border-color: #4DA694;
+        }
+
+        .option-row.active .option-radio::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: #4DA694;
+        }
+
+        .option-content {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .option-title {
+            font-size: 15px;
+            font-weight: 600;
+            color: #222;
+            margin-bottom: 3px;
+        }
+
+        .option-desc {
+            font-size: 12px;
+            color: #999;
+            line-height: 1.5;
+        }
+
+        .option-preview {
+            margin-top: 6px;
+            font-size: 11px;
+            color: #4DA694;
+            background: rgba(77, 166, 148, 0.08);
+            padding: 4px 10px;
+            border-radius: 8px;
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .option-preview i {
+            font-size: 10px;
+        }
+
+        /* 自定义提醒 - 互动类型多选 */
+        .custom-checks {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 10px;
+        }
+
+        .check-chip {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            padding: 5px 14px;
+            border-radius: 20px;
+            background: #f5f5f5;
+            cursor: pointer;
+            user-select: none;
+            transition: all 0.2s;
+            font-size: 13px;
+            color: #666;
+            position: relative;
+        }
+
+        .check-chip input {
+            position: absolute;
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .check-chip:active {
+            transform: scale(0.94);
+        }
+
+        .check-chip input:checked+span {
+            color: #4DA694;
+            font-weight: 600;
+        }
+
+        .check-chip:has(input:checked) {
+            background: rgba(77, 166, 148, 0.12);
+        }
+
+        /* 不支持 :has 的回退 */
+        .check-chip.checked {
+            background: rgba(77, 166, 148, 0.12);
+        }
+
+        .custom-input-row {
+            margin-top: 10px;
+        }
+
+        .custom-input-row .form-input {
+            font-size: 13px;
+            padding: 8px 12px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="phone-frame">
+        <div class="phone-notch"></div>
+
+        <div class="screen">
+            <div class="status-bar">
+                <span class="time">8:29</span>
+                <div class="status-icons">
+                    <i class="fa-solid fa-signal"></i>
+                    <i class="fa-solid fa-wifi"></i>
+                    <i class="fa-solid fa-battery-full"></i>
+                </div>
+            </div>
+
+            <div class="page-content serial-content">
+                <!-- 导航 -->
+                <div class="nav-bar">
+                    <div class="nav-back" id="navBack">
+                        <i class="fa-solid fa-chevron-left"></i>
+                    </div>
+                    <div class="nav-title">全部连载</div>
+                    <div class="nav-right" id="createNewBtn">
+                        <i class="fa-solid fa-plus"></i>
+                    </div>
+                </div>
+
+                <!-- ===== 我的全部连载 ===== -->
+                <div class="section-label">
+                    我的连载
+                    <span class="serial-count">共 4 部</span>
+                </div>
+
+                <div class="serial-list" id="serialList">
+                    <div class="serial-item" data-title="《明天》">
+                        <div class="si-cover-wrap">
+                            <div class="si-cover" style="background: linear-gradient(135deg, #ffecd2, #fcb69f);">
+                                <i class="fa-solid fa-feather-pointed"></i>
+                            </div>
+                            <span class="badge-new cover-badge">有新互动</span>
+                        </div>
+                        <div class="si-body">
+                            <div class="si-title-row">
+                                <span class="si-title">《明天》</span>
+                                <span class="si-tag ongoing">连载中</span>
+                            </div>
+                            <div class="si-meta">
+                                <span><i class="fa-solid fa-book-open"></i>已更新至 第15章</span>
+                                <span><i class="fa-regular fa-clock"></i>上次更新 9.6</span>
+                            </div>
+                            <button class="interaction-settings-btn" data-title="《明天》">
+                                <i class="fa-regular fa-bell"></i> 互动设置
+                            </button>
+                        </div>
+                        <i class="fa-solid fa-chevron-right si-arrow"></i>
+                    </div>
+
+                    <div class="serial-item" data-title="《星屑收集手册》">
+                        <div class="si-cover-wrap">
+                            <div class="si-cover" style="background: linear-gradient(135deg, #e0c3fc, #8ec5fc);">
+                                <i class="fa-solid fa-star"></i>
+                            </div>
+                            <span class="badge-new cover-badge">有新互动</span>
+                        </div>
+                        <div class="si-body">
+                            <div class="si-title-row">
+                                <span class="si-title">《星屑收集手册》</span>
+                                <span class="si-tag ongoing">连载中</span>
+                            </div>
+                            <div class="si-meta">
+                                <span><i class="fa-solid fa-book-open"></i>已更新至 第8章</span>
+                                <span><i class="fa-regular fa-clock"></i>上次更新 8.28</span>
+                            </div>
+                            <button class="interaction-settings-btn" data-title="《星屑收集手册》">
+                                <i class="fa-regular fa-bell"></i> 互动设置
+                            </button>
+                        </div>
+                        <i class="fa-solid fa-chevron-right si-arrow"></i>
+                    </div>
+
+                    <div class="serial-item" data-title="《夏日终曲》">
+                        <div class="si-cover" style="background: linear-gradient(135deg, #a1c4fd, #c2e9fb);">
+                            <i class="fa-solid fa-book"></i>
+                        </div>
+                        <div class="si-body">
+                            <div class="si-title-row">
+                                <span class="si-title">《夏日终曲》</span>
+                                <span class="si-tag done">已完结</span>
+                            </div>
+                            <div class="si-meta">
+                                <span><i class="fa-solid fa-book-open"></i>共 32 章</span>
+                                <span><i class="fa-regular fa-clock"></i>完结于 7.15</span>
+                            </div>
+                            <button class="interaction-settings-btn" data-title="《夏日终曲》">
+                                <i class="fa-regular fa-bell"></i> 互动设置
+                            </button>
+                        </div>
+                        <i class="fa-solid fa-chevron-right si-arrow"></i>
+                    </div>
+
+                    <div class="serial-item" data-title="《未命名草稿》">
+                        <div class="si-cover" style="background: linear-gradient(135deg, #f5f7fa, #c3cfe2);">
+                            <i class="fa-solid fa-pen-nib" style="color: #8a94a6;"></i>
+                        </div>
+                        <div class="si-body">
+                            <div class="si-title-row">
+                                <span class="si-title">《未命名草稿》</span>
+                                <span class="si-tag draft">草稿</span>
+                            </div>
+                            <div class="si-meta">
+                                <span><i class="fa-solid fa-book-open"></i>已写 3 章</span>
+                                <span><i class="fa-regular fa-clock"></i>上次编辑 9.1</span>
+                            </div>
+                        </div>
+                        <i class="fa-solid fa-chevron-right si-arrow"></i>
+                    </div>
+                </div>
+
+                <div class="bottom-placeholder"></div>
+            </div>
+
+            <!-- 底部导航 -->
+            <div class="bottom-nav">
+                <div class="nav-item">
+                    <i class="fa-solid fa-house"></i>
+                    <span>首页</span>
+                </div>
+                <div class="nav-item">
+                    <i class="fa-regular fa-heart"></i>
+                    <span>关注</span>
+                </div>
+                <div class="nav-item center-btn">
+                    <div class="plus-circle">
+                        <i class="fa-solid fa-plus"></i>
+                    </div>
+                </div>
+                <div class="nav-item">
+                    <i class="fa-solid fa-book-open"></i>
+                    <span>书城</span>
+                </div>
+                <div class="nav-item active">
+                    <i class="fa-regular fa-user"></i>
+                    <span>我的</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- ===== 创建新连载弹窗 ===== -->
+        <div class="modal-overlay" id="createModal">
+            <div class="modal-sheet">
+                <div class="modal-handle"></div>
+                <div class="modal-header">
+                    <span class="modal-cancel" id="modalCancel">取消</span>
+                    <span class="modal-title">创建新连载</span>
+                    <span class="modal-submit" id="modalSubmit">创建</span>
+                </div>
+                <div class="modal-body">
+                    <!-- 封面选择 -->
+                    <div class="form-row">
+                        <label class="form-label">封面</label>
+                        <div class="cover-picker" id="coverPicker">
+                            <div class="cover-option active" data-cover="linear-gradient(135deg, #ffecd2, #fcb69f)"
+                                data-icon="fa-feather-pointed"></div>
+                            <div class="cover-option" data-cover="linear-gradient(135deg, #e0c3fc, #8ec5fc)"
+                                data-icon="fa-star"></div>
+                            <div class="cover-option" data-cover="linear-gradient(135deg, #a1c4fd, #c2e9fb)"
+                                data-icon="fa-book"></div>
+                            <div class="cover-option" data-cover="linear-gradient(135deg, #89f7fe, #66a6ff)"
+                                data-icon="fa-cloud-rain"></div>
+                            <div class="cover-option" data-cover="linear-gradient(135deg, #fbc2eb, #a6c1ee)"
+                                data-icon="fa-music"></div>
+                        </div>
+                    </div>
+                    <!-- 连载标题 -->
+                    <div class="form-row">
+                        <label class="form-label">连载标题</label>
+                        <input type="text" class="form-input" id="serialTitle" placeholder="为你的连载起个名字" maxlength="30">
+                    </div>
+                    <!-- 简介 -->
+                    <div class="form-row">
+                        <label class="form-label">简介<span class="form-optional">（选填）</span></label>
+                        <textarea class="form-textarea" id="serialDesc" placeholder="简要描述连载内容" rows="3"
+                            maxlength="200"></textarea>
+                    </div>
+                    <!-- 标签 -->
+                    <div class="form-row">
+                        <label class="form-label">标签</label>
+                        <div class="tag-picker" id="tagPicker">
+                            <span class="tag-chip active">原创</span>
+                            <span class="tag-chip">同人</span>
+                            <span class="tag-chip">小说</span>
+                            <span class="tag-chip">随笔</span>
+                            <span class="tag-chip">诗歌</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ===== 互动设置弹窗 ===== -->
+        <div class="modal-overlay" id="interactionModal">
+            <div class="modal-sheet">
+                <div class="modal-handle"></div>
+                <div class="modal-header">
+                    <span class="modal-cancel" id="interactionCancel">取消</span>
+                    <span class="modal-title">互动提醒设置</span>
+                    <span class="modal-submit" id="interactionSubmit">保存</span>
+                </div>
+                <div class="modal-body">
+                    <div class="form-row">
+                        <label class="form-label">
+                            读者互动提醒门槛
+                            <span class="form-optional">（仅符合条件的互动会推送提醒）</span>
+                        </label>
+                    </div>
+                    <div id="interactionOptions">
+                        <div class="option-row active" data-value="default">
+                            <div class="option-radio"></div>
+                            <div class="option-content">
+                                <div class="option-title">系统默认</div>
+                                <div class="option-desc">所有评论、打赏、收藏均会推送提醒</div>
+                                <div class="option-preview">
+                                    <i class="fa-solid fa-bell"></i> 提醒全部互动
+                                </div>
+                            </div>
+                        </div>
+                        <div class="option-row" data-value="tip_comment">
+                            <div class="option-radio"></div>
+                            <div class="option-content">
+                                <div class="option-title">打赏 + 评论</div>
+                                <div class="option-desc">仅当读者同时打赏并发表评论时才推送提醒</div>
+                                <div class="option-preview">
+                                    <i class="fa-solid fa-coins"></i> + <i class="fa-regular fa-comment"></i> 双重互动才提醒
+                                </div>
+                            </div>
+                        </div>
+                        <div class="option-row" data-value="long_comment">
+                            <div class="option-radio"></div>
+                            <div class="option-content">
+                                <div class="option-title">100字以上评论</div>
+                                <div class="option-desc">仅当读者发表 100 字以上的长评时才推送提醒</div>
+                                <div class="option-preview">
+                                    <i class="fa-solid fa-pen-nib"></i> 过滤水评，只提醒长评
+                                </div>
+                            </div>
+                        </div>
+                        <div class="option-row" data-value="custom">
+                            <div class="option-radio"></div>
+                            <div class="option-content">
+                                <div class="option-title">自定义提醒</div>
+                                <div class="option-desc">勾选你关心的互动类型，仅符合条件的互动才会推送提醒</div>
+                                <div class="custom-checks" id="customChecks">
+                                    <label class="check-chip">
+                                        <input type="checkbox" value="comment">
+                                        <span>评论</span>
+                                    </label>
+                                    <label class="check-chip">
+                                        <input type="checkbox" value="tip">
+                                        <span>打赏</span>
+                                    </label>
+                                    <label class="check-chip">
+                                        <input type="checkbox" value="like">
+                                        <span>收藏</span>
+                                    </label>
+                                    <label class="check-chip">
+                                        <input type="checkbox" value="long">
+                                        <span>长评(≥100字)</span>
+                                    </label>
+                                    <label class="check-chip">
+                                        <input type="checkbox" value="reply">
+                                        <span>回复</span>
+                                    </label>
+                                </div>
+                                <div class="custom-input-row">
+                                    <input type="text" class="form-input" id="customKeyword"
+                                        placeholder="关键词包含（选填，逗号分隔）" maxlength="60">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // 返回连载中心
+            const navBack = document.getElementById('navBack');
+            if (navBack) {
+                navBack.addEventListener('click', function () {
+                    window.location.href = 'serial.html';
+                });
+            }
+
+            // 点击连载项，进入对应连载
+            const serialList = document.getElementById('serialList');
+            if (serialList) {
+                serialList.addEventListener('click', function (e) {
+                    const item = e.target.closest('.serial-item');
+                    if (item) {
+                        const title = item.dataset.title || '该连载';
+                        alert('打开连载' + title);
+                    }
+                });
+            }
+
+            // 创建新连载 —— 弹出创建面板
+            const createModal = document.getElementById('createModal');
+            const createNewBtn = document.getElementById('createNewBtn');
+            if (createNewBtn) {
+                createNewBtn.addEventListener('click', function () {
+                    createModal.classList.add('active');
+                });
+            }
+
+            // 关闭弹窗
+            const modalCancel = document.getElementById('modalCancel');
+            if (modalCancel) {
+                modalCancel.addEventListener('click', function () {
+                    createModal.classList.remove('active');
+                });
+            }
+            // 点击遮罩关闭
+            if (createModal) {
+                createModal.addEventListener('click', function (e) {
+                    if (e.target === createModal) {
+                        createModal.classList.remove('active');
+                    }
+                });
+            }
+
+            // 封面选择
+            const coverPicker = document.getElementById('coverPicker');
+            if (coverPicker) {
+                // 给每个选项设置背景色
+                coverPicker.querySelectorAll('.cover-option').forEach(opt => {
+                    opt.style.background = opt.dataset.cover;
+                    opt.addEventListener('click', function () {
+                        coverPicker.querySelectorAll('.cover-option').forEach(o => o.classList.remove('active'));
+                        this.classList.add('active');
+                    });
+                });
+            }
+
+            // 标签选择（单选）
+            const tagPicker = document.getElementById('tagPicker');
+            if (tagPicker) {
+                tagPicker.querySelectorAll('.tag-chip').forEach(chip => {
+                    chip.addEventListener('click', function () {
+                        tagPicker.querySelectorAll('.tag-chip').forEach(c => c.classList.remove('active'));
+                        this.classList.add('active');
+                    });
+                });
+            }
+
+            // 提交创建
+            const modalSubmit = document.getElementById('modalSubmit');
+            if (modalSubmit) {
+                modalSubmit.addEventListener('click', function () {
+                    const title = document.getElementById('serialTitle').value.trim();
+                    if (!title) {
+                        alert('请输入连载标题');
+                        return;
+                    }
+                    alert('连载《' + title + '》创建成功！');
+                    createModal.classList.remove('active');
+                });
+            }
+
+            // ===== 互动设置弹窗 =====
+            const interactionModal = document.getElementById('interactionModal');
+            const interactionOptions = document.getElementById('interactionOptions');
+            let interactionTargetTitle = '';
+
+            // 点击"互动设置"按钮，打开弹窗
+            document.querySelectorAll('.interaction-settings-btn').forEach(btn => {
+                btn.addEventListener('click', function (e) {
+                    e.stopPropagation();
+                    interactionTargetTitle = this.dataset.title || '';
+                    // 更新弹窗标题
+                    const modalTitle = interactionModal.querySelector('.modal-title');
+                    modalTitle.textContent = '互动提醒 · ' + interactionTargetTitle;
+                    interactionModal.classList.add('active');
+                });
+            });
+
+            // 选项单选（点击自定义区域内的多选不触发行切换）
+            if (interactionOptions) {
+                interactionOptions.querySelectorAll('.option-row').forEach(row => {
+                    row.addEventListener('click', function (e) {
+                        // 点击自定义内部的 chip/input 时不切换行选中
+                        if (e.target.closest('.custom-checks') || e.target.closest('.custom-input-row')) return;
+                        interactionOptions.querySelectorAll('.option-row').forEach(r => r.classList.remove('active'));
+                        this.classList.add('active');
+                    });
+                });
+            }
+
+            // 自定义多选 chip 样式同步
+            const customChecks = document.getElementById('customChecks');
+            if (customChecks) {
+                customChecks.querySelectorAll('.check-chip').forEach(chip => {
+                    const input = chip.querySelector('input');
+                    // 初始同步
+                    if (input.checked) chip.classList.add('checked');
+                    chip.addEventListener('click', function () {
+                        input.checked = !input.checked;
+                        chip.classList.toggle('checked', input.checked);
+                    });
+                });
+            }
+
+            // 关闭弹窗
+            const interactionCancel = document.getElementById('interactionCancel');
+            if (interactionCancel) {
+                interactionCancel.addEventListener('click', function () {
+                    interactionModal.classList.remove('active');
+                });
+            }
+            if (interactionModal) {
+                interactionModal.addEventListener('click', function (e) {
+                    if (e.target === interactionModal) {
+                        interactionModal.classList.remove('active');
+                    }
+                });
+            }
+
+            // 保存设置
+            const interactionSubmit = document.getElementById('interactionSubmit');
+            if (interactionSubmit) {
+                interactionSubmit.addEventListener('click', function () {
+                    const active = interactionOptions.querySelector('.option-row.active');
+                    if (!active) return;
+                    const value = active.dataset.value;
+                    const labels = {
+                        'default': '系统默认',
+                        'tip_comment': '打赏+评论',
+                        'long_comment': '100字以上评论',
+                        'custom': '自定义提醒'
+                    };
+                    if (value === 'custom') {
+                        const checkedTypes = Array.from(customChecks.querySelectorAll('input:checked')).map(i => i.parentElement.querySelector('span').textContent);
+                        const keyword = document.getElementById('customKeyword').value.trim();
+                        if (checkedTypes.length === 0) {
+                            alert('请至少勾选一个互动类型');
+                            return;
+                        }
+                        let msg = interactionTargetTitle + ' 的互动提醒已设为：自定义（' + checkedTypes.join('、') + '）';
+                        if (keyword) msg += '\n关键词：' + keyword;
+                        alert(msg);
+                    } else {
+                        alert(interactionTargetTitle + ' 的互动提醒已设为：' + labels[value]);
+                    }
+                    interactionModal.classList.remove('active');
+                });
+            }
+
+            // plus-circle 点击反馈
+            const plusCircle = document.querySelector('.plus-circle');
+            if (plusCircle) {
+                plusCircle.addEventListener('click', function () {
+                    this.style.transform = 'scale(0.9) rotate(90deg)';
+                    setTimeout(() => {
+                        this.style.transform = 'scale(1) rotate(0deg)';
+                    }, 200);
+                });
+            }
+
+            // 底部导航切换
+            const navItems = document.querySelectorAll('.nav-item:not(.center-btn)');
+            navItems.forEach(item => {
+                item.addEventListener('click', function () {
+                    navItems.forEach(n => n.classList.remove('active'));
+                    this.classList.add('active');
+                });
+            });
+        });
+    </script>
+</body>
+
+</html>

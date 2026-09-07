@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>乐乎 - 我的</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+
+<body>
+  <div class="phone-frame">
+    <div class="phone-notch"></div>
+
+    <div class="screen">
+      <div class="status-bar">
+        <span class="time">8:29</span>
+        <div class="status-icons">
+          <i class="fa-solid fa-signal"></i>
+          <i class="fa-solid fa-wifi"></i>
+          <i class="fa-solid fa-battery-full"></i>
+        </div>
+      </div>
+
+      <div class="page-content">
+        <div class="header-area">
+          <div class="header-icons">
+            <i class="fa-regular fa-moon"></i>
+            <i class="fa-regular fa-bookmark"></i>
+            <i class="fa-solid fa-gear"></i>
+          </div>
+        </div>
+
+        <div class="profile-section">
+          <div class="avatar-wrapper">
+            <div class="avatar-border">
+              <img
+                src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=anime%20girl%20avatar%20with%20pink%20hair%20and%20flower%20crown%20cute%20kawaii&image_size=square"
+                alt="avatar" class="avatar">
+            </div>
+          </div>
+          <div class="user-info">
+            <div class="username-row">
+              <!-- <h2 class="username">我星はどこに旅寝や</h2> -->
+              <h2 class="username">黄瓅萱</h2>
+              <i class="fa-solid fa-chevron-right arrow"></i>
+            </div>
+          </div>
+        </div>
+
+        <div class="stats-row">
+          <div class="stat-item">
+            <span class="stat-num">74</span>
+            <span class="stat-label">文章</span>
+          </div>
+          <div class="stat-item">
+            <span class="stat-num">6万</span>
+            <span class="stat-label">热度</span>
+          </div>
+          <div class="stat-item">
+            <span class="stat-num">974</span>
+            <span class="stat-label">粉丝</span>
+          </div>
+          <div class="stat-item">
+            <span class="stat-num">66</span>
+            <span class="stat-label">关注</span>
+          </div>
+        </div>
+
+        <div class="quick-actions">
+          <div class="action-item">
+            <div class="action-icon pink">
+              <i class="fa-solid fa-heart"></i>
+            </div>
+            <span class="action-label">喜欢/收藏</span>
+          </div>
+          <div class="action-item">
+            <div class="action-icon blue">
+              <i class="fa-solid fa-star"></i>
+            </div>
+            <span class="action-badge">+17</span>
+            <span class="action-label">我的订阅</span>
+          </div>
+          <div class="action-item">
+            <div class="action-icon teal">
+              <i class="fa-solid fa-feather-pointed"></i>
+            </div>
+            <span class="action-label">我的足迹</span>
+          </div>
+          <div class="action-item">
+            <div class="action-icon orange">
+              <i class="fa-regular fa-clock"></i>
+            </div>
+            <span class="action-label">稍后再看</span>
+          </div>
+          <div class="action-item" id="actionSerial">
+            <div class="action-icon purple">
+              <i class="fa-solid fa-book-open-reader"></i>
+            </div>
+            <span class="action-label">连载中心</span>
+          </div>
+        </div>
+
+        <div class="notification-bar">
+          <i class="fa-solid fa-gift gift-icon"></i>
+          <span class="notification-text">你订阅的《竹林月夜》更新了</span>
+          <i class="fa-solid fa-chevron-right notif-arrow"></i>
+        </div>
+
+        <div class="ad-banner">
+          <div class="ad-content">
+            <div class="ad-title-row">
+              <span class="ad-title">广告栏</span>
+              <!-- <span class="ad-tag">里世界</span>
+              <span class="ad-tag hot">内测专属</span> -->
+            </div>
+            <p class="ad-desc">在此处可设置广告banner</p>
+            <!-- <button class="ad-btn">立即体验</button> -->
+          </div>
+        </div>
+
+        <div class="section-card">
+          <div class="section-title">我的消息</div>
+          <div class="section-grid">
+            <div class="grid-item">
+              <div class="grid-icon pink-bg">
+                <i class="fa-solid fa-heart"></i>
+              </div>
+              <span class="grid-label">收到的喜欢</span>
+            </div>
+            <div class="grid-item">
+              <div class="grid-icon gray-bg">
+                <i class="fa-regular fa-comment-dots"></i>
+              </div>
+              <span class="grid-label">评论</span>
+            </div>
+            <div class="grid-item">
+              <div class="grid-icon gray-bg">
+                <i class="fa-regular fa-face-smile"></i>
+              </div>
+              <span class="grid-label">聊天</span>
+            </div>
+            <div class="grid-item">
+              <div class="grid-icon gray-bg">
+                <i class="fa-regular fa-bell"></i>
+              </div>
+              <span class="grid-label">通知</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="section-card">
+          <div class="section-title">创作者中心</div>
+          <div class="section-grid">
+            <div class="grid-item">
+              <div class="grid-icon pink-bg">
+                <i class="fa-solid fa-pen-nib"></i>
+              </div>
+              <span class="grid-label">创作首页</span>
+            </div>
+            <div class="grid-item">
+              <div class="grid-icon blue-bg">
+                <i class="fa-solid fa-chart-line"></i>
+              </div>
+              <span class="grid-label">数据中心</span>
+            </div>
+            <div class="grid-item">
+              <div class="grid-icon orange-bg special">
+                <i class="fa-regular fa-folder"></i>
+                <span class="sub-badge">超多小蓝手</span>
+              </div>
+              <span class="grid-label">作品管理</span>
+            </div>
+            <div class="grid-item">
+              <div class="grid-icon yellow-bg">
+                <i class="fa-solid fa-yen-sign"></i>
+              </div>
+              <span class="grid-label">创作收益</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="section-card account-card">
+          <div class="account-header">
+            <span class="section-title">我的账户</span>
+            <button class="recharge-btn">充值中心</button>
+          </div>
+          <div class="account-grid">
+            <div class="account-item">
+              <span class="account-num">0</span>
+              <span class="account-label">乐乎币</span>
+            </div>
+            <div class="account-item">
+              <span class="account-num">0</span>
+              <span class="account-label">糖果券</span>
+            </div>
+            <div class="account-item">
+              <span class="account-num">0</span>
+              <span class="account-badge">待领取</span>
+              <span class="account-label">粮票</span>
+            </div>
+            <div class="account-item">
+              <span class="account-num">0</span>
+              <span class="account-label">乐乎米</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="bottom-placeholder"></div>
+      </div>
+
+      <div class="bottom-nav">
+        <div class="nav-item">
+          <i class="fa-solid fa-house"></i>
+          <span>首页</span>
+        </div>
+        <div class="nav-item">
+          <i class="fa-regular fa-heart"></i>
+          <span>关注</span>
+        </div>
+        <div class="nav-item center-btn">
+          <div class="plus-circle">
+            <i class="fa-solid fa-plus"></i>
+          </div>
+        </div>
+        <div class="nav-item">
+          <i class="fa-solid fa-book-open"></i>
+          <span>书城</span>
+        </div>
+        <div class="nav-item active">
+          <i class="fa-regular fa-user"></i>
+          <span>我的</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+
+</html>

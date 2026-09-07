@@ -7,6 +7,160 @@
   <title>乐乎 - 我的</title>
   <link rel="stylesheet" href="style.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    /* ===== 首页·连载中心引导弹窗 ===== */
+    .home-guide-mask {
+      position: absolute;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.45);
+      z-index: 300;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 28px;
+      border-radius: 40px;
+    }
+
+    .home-guide-mask.show {
+      display: flex;
+    }
+
+    .home-guide-card {
+      width: 100%;
+      max-width: 320px;
+      background: #fff;
+      border-radius: 22px;
+      padding: 24px 22px 20px;
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.25);
+      animation: hgPop 0.32s cubic-bezier(0.2, 0.9, 0.3, 1.2);
+    }
+
+    @keyframes hgPop {
+      from {
+        transform: scale(0.85);
+        opacity: 0;
+      }
+
+      to {
+        transform: scale(1);
+        opacity: 1;
+      }
+    }
+
+    .home-guide-icon {
+      width: 62px;
+      height: 62px;
+      margin: 0 auto 12px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #b8a6dd, #9b72cf);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+      font-size: 26px;
+      box-shadow: 0 6px 18px rgba(155, 114, 207, 0.4);
+    }
+
+    .home-guide-title {
+      text-align: center;
+      font-size: 18px;
+      font-weight: 700;
+      color: #222;
+    }
+
+    .home-guide-sub {
+      text-align: center;
+      font-size: 12.5px;
+      color: #999;
+      margin-top: 6px;
+      line-height: 1.5;
+    }
+
+    .home-guide-list {
+      list-style: none;
+      margin: 18px 0 6px;
+    }
+
+    .home-guide-list li {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      font-size: 13px;
+      color: #555;
+      line-height: 1.5;
+      padding: 8px 10px;
+      border-radius: 12px;
+      margin-bottom: 6px;
+      background: #f7f6fb;
+    }
+
+    .home-guide-list li.highlight {
+      background: rgba(77, 155, 148, 0.1);
+      border: 1.5px dashed rgba(77, 155, 148, 0.5);
+    }
+
+    .home-guide-list i {
+      color: #9b72cf;
+      font-size: 14px;
+      margin-top: 2px;
+      flex-shrink: 0;
+    }
+
+    .home-guide-list li.highlight i {
+      color: #4D9B94;
+    }
+
+    .home-guide-list b {
+      color: #333;
+    }
+
+    .home-guide-btns {
+      display: flex;
+      gap: 10px;
+      margin-top: 16px;
+    }
+
+    .home-guide-btns button {
+      flex: 1;
+      padding: 12px 0;
+      border-radius: 50px;
+      font-size: 14.5px;
+      font-weight: 600;
+      cursor: pointer;
+      border: none;
+      transition: transform 0.15s;
+    }
+
+    .home-guide-btns button:active {
+      transform: scale(0.96);
+    }
+
+    .hg-later {
+      background: #f3f3f5;
+      color: #888;
+    }
+
+    .hg-go {
+      background: linear-gradient(135deg, #4D9B94, #6cb8b0);
+      color: #fff;
+      box-shadow: 0 4px 14px rgba(77, 155, 148, 0.35);
+    }
+
+    .home-guide-remember {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      margin-top: 14px;
+      font-size: 12px;
+      color: #aaa;
+      cursor: pointer;
+    }
+
+    .home-guide-remember input {
+      accent-color: #4D9B94;
+    }
+  </style>
 </head>
 
 <body>
@@ -233,10 +387,71 @@
           <span>我的</span>
         </div>
       </div>
+
+      <!-- 首页·连载中心引导弹窗 -->
+      <div class="home-guide-mask" id="homeGuideMask">
+        <div class="home-guide-card">
+          <div class="home-guide-icon"><i class="fa-solid fa-book-open-reader"></i></div>
+          <div class="home-guide-title">发现「连载中心」</div>
+          <div class="home-guide-sub">追更阅读与创作互动，都集中在这里</div>
+          <ul class="home-guide-list">
+            <li><i class="fa-solid fa-book-open"></i><span><b>继续阅读</b>：追更作品的阅读进度，一键接着看</span></li>
+            <li><i class="fa-solid fa-reply"></i><span><b>作者回复</b>：追更作者回复你的评论时，第一时间提醒</span></li>
+            <li class="highlight"><i class="fa-solid fa-bell"></i><span><b>精选互动</b>：读者长评经提醒门槛过滤，只推送重要反馈</span></li>
+            <li><i class="fa-solid fa-feather-pointed"></i><span><b>我的连载</b>：创建作品，并为每部连载单独设置互动提醒</span></li>
+          </ul>
+          <div class="home-guide-btns">
+            <button class="hg-later" id="hgLater">稍后看看</button>
+            <button class="hg-go" id="hgGo">立即进入</button>
+          </div>
+          <label class="home-guide-remember">
+            <input type="checkbox" id="hgRemember"> 不再自动提示
+          </label>
+        </div>
+      </div>
     </div>
   </div>
 
   <script src="script.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      // “连载中心”入口点击跳转
+      var actionSerial = document.getElementById('actionSerial');
+      if (actionSerial) {
+        actionSerial.style.cursor = 'pointer';
+        actionSerial.addEventListener('click', function () {
+          window.location.href = 'serial.html';
+        });
+      }
+
+      // 首页连载中心引导弹窗
+      var mask = document.getElementById('homeGuideMask');
+      if (!mask) return;
+      var KEY = 'homeSerialGuideDismissed';
+      var rememberBox = document.getElementById('hgRemember');
+
+      function closeGuide() {
+        mask.classList.remove('show');
+        if (rememberBox.checked) {
+          try { localStorage.setItem(KEY, '1'); } catch (e) { }
+        }
+      }
+
+      var dismissed = null;
+      try { dismissed = localStorage.getItem(KEY); } catch (e) { }
+      if (!dismissed) {
+        setTimeout(function () { mask.classList.add('show'); }, 400);
+      }
+
+      document.getElementById('hgGo').addEventListener('click', function () {
+        window.location.href = 'serial.html';
+      });
+      document.getElementById('hgLater').addEventListener('click', closeGuide);
+      mask.addEventListener('click', function (e) {
+        if (e.target === mask) closeGuide();
+      });
+    });
+  </script>
 </body>
 
 </html>

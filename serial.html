@@ -942,7 +942,7 @@
                     <span class="badge-new">新增1条</span>
                 </div>
                 <div class="author-list">
-                    <div class="author-item" data-author="南风">
+                    <div class="author-item" data-author="南风" data-link="reply-detail.html?author=南风&book=《雨停之后》">
                         <div class="author-avatar" style="background: #4D9B94;">
                             <span>南</span>
                         </div>
@@ -1138,7 +1138,7 @@
             if (continueReadingBtn) {
                 continueReadingBtn.addEventListener('click', function (e) {
                     e.stopPropagation();
-                    alert('继续阅读《竹林月夜》');
+                    window.location.href = 'reader.html?title=' + encodeURIComponent('《竹林月夜》') + '&author=' + encodeURIComponent('派蒙');
                 });
             }
 
@@ -1147,6 +1147,11 @@
                 list.addEventListener('click', function (e) {
                     const item = e.target.closest('.author-item');
                     if (item) {
+                        // 配置了跳转链接的条目（如作者回复）跳转到对应详情页
+                        if (item.dataset.link) {
+                            window.location.href = item.dataset.link;
+                            return;
+                        }
                         const name = item.querySelector('.author-name')?.textContent || '作者';
                         alert('进入作者主页：' + name);
                     }

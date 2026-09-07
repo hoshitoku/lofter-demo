@@ -1268,7 +1268,7 @@
                         <div class="guide-item-icon"><i class="fa-solid fa-book-open"></i></div>
                         <div class="guide-item-text">
                             <b>打开连载</b>
-                            点击任意连载卡片，进入作品的章节管理页面。
+                            点击任意连载卡片，进入作品阅读页面。
                         </div>
                     </div>
                     <div class="guide-item">
@@ -1359,7 +1359,7 @@
                     const item = e.target.closest('.serial-item');
                     if (item) {
                         const title = item.dataset.title || '该连载';
-                        alert('打开连载' + title);
+                        window.location.href = 'reader.html?title=' + encodeURIComponent(title);
                     }
                 });
             }

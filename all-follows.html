@@ -266,7 +266,7 @@
         .continue-card .cc-progress-fill {
             height: 100%;
             border-radius: 4px;
-            background: #4DA694;
+            background: #4D9B94;
             transition: width 0.3s;
         }
 
@@ -276,8 +276,9 @@
 
         /* 卡片内“继续阅读”按钮 */
         .continue-card .cc-btn {
-            background: #4DA694;
-            border: none;
+            background: #4D9B94;
+            border: 1.5px solid transparent;
+            box-sizing: border-box;
             color: #fff;
             font-size: 13px;
             font-weight: 600;
@@ -286,6 +287,8 @@
             cursor: pointer;
             display: inline-flex;
             align-items: center;
+            justify-content: center;
+            line-height: 1;
             gap: 4px;
             transition: transform 0.15s, box-shadow 0.15s;
             box-shadow: 0 2px 10px rgba(77, 155, 148, 0.25);
@@ -299,6 +302,36 @@
 
         .continue-card .cc-btn i {
             font-size: 11px;
+        }
+
+        /* 按钮行：继续阅读 + 打赏鼓励 横向排列 */
+        .continue-card .cc-actions {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 8px;
+            margin-top: 4px;
+            align-self: flex-start;
+        }
+
+        .continue-card .cc-actions .cc-btn {
+            margin-top: 0;
+        }
+
+        /* 打赏鼓励按钮（金橙色描边） */
+        .continue-card .cc-tip-btn {
+            background: #fff;
+            border: 1.5px solid #ffcf8a;
+            color: #f5a623;
+            box-shadow: 0 2px 10px rgba(245, 166, 35, 0.15);
+        }
+
+        .continue-card .cc-tip-btn i {
+            color: #f5a623;
+        }
+
+        .continue-card .cc-tip-btn:active {
+            transform: scale(0.96);
         }
 
         /* ===== 最近更新时间标签（仿连载中心 frequency-tag） ===== */
@@ -326,7 +359,7 @@
 
         .frequency-tag i {
             font-size: 11px;
-            color: #4DA694;
+            color: #4D9B94;
         }
 
         .bottom-placeholder {
@@ -481,7 +514,7 @@
                 </div>
 
                 <div class="follow-list" id="followList">
-                    <div class="continue-card" data-title="《竹林月夜》">
+                    <div class="continue-card" data-title="《竹林月夜》" data-author="派蒙">
                         <div class="frequency-tag">
                             <i class="fa-regular fa-clock"></i> 今日更新
                         </div>
@@ -498,7 +531,10 @@
                                 <div class="cc-progress-fill" style="width: 48%;"></div>
                                 <div class="cc-progress-thumb"></div>
                             </div>
-                            <button class="cc-btn">继续阅读 <i class="fa-solid fa-chevron-right"></i></button>
+                            <div class="cc-actions">
+                                <button class="cc-btn">继续阅读 <i class="fa-solid fa-chevron-right"></i></button>
+                                <button class="cc-btn cc-tip-btn"><i class="fa-solid fa-coins"></i> 打赏鼓励</button>
+                            </div>
                         </div>
                     </div>
 
@@ -519,7 +555,10 @@
                                 <div class="cc-progress-fill" style="width: 25%;"></div>
                                 <div class="cc-progress-thumb"></div>
                             </div>
-                            <button class="cc-btn">继续阅读 <i class="fa-solid fa-chevron-right"></i></button>
+                            <div class="cc-actions">
+                                <button class="cc-btn">继续阅读 <i class="fa-solid fa-chevron-right"></i></button>
+                                <button class="cc-btn cc-tip-btn"><i class="fa-solid fa-coins"></i> 打赏鼓励</button>
+                            </div>
                         </div>
                     </div>
 
@@ -544,11 +583,14 @@
                                 <div class="cc-progress-fill" style="width: 30%;"></div>
                                 <div class="cc-progress-thumb"></div>
                             </div>
-                            <button class="cc-btn">继续阅读 <i class="fa-solid fa-chevron-right"></i></button>
+                            <div class="cc-actions">
+                                <button class="cc-btn">继续阅读 <i class="fa-solid fa-chevron-right"></i></button>
+                                <button class="cc-btn cc-tip-btn"><i class="fa-solid fa-coins"></i> 打赏鼓励</button>
+                            </div>
                         </div>
                     </div>
 
-                    <div class="continue-card" data-title="《夏日终曲》">
+                    <div class="continue-card" data-title="《夏日终曲》" data-author="坂木">
                         <div class="frequency-tag">
                             <i class="fa-regular fa-clock"></i> 上次更新 8.30
                         </div>
@@ -565,7 +607,10 @@
                                 <div class="cc-progress-fill" style="width: 94%;"></div>
                                 <div class="cc-progress-thumb"></div>
                             </div>
-                            <button class="cc-btn">继续阅读 <i class="fa-solid fa-chevron-right"></i></button>
+                            <div class="cc-actions">
+                                <button class="cc-btn">继续阅读 <i class="fa-solid fa-chevron-right"></i></button>
+                                <button class="cc-btn cc-tip-btn"><i class="fa-solid fa-coins"></i> 打赏鼓励</button>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -617,12 +662,18 @@
                     const item = e.target.closest('.continue-card');
                     if (!item) return;
                     const title = item.dataset.title || '该连载';
-                    if (e.target.closest('.cc-btn')) {
+                    const author = item.dataset.author || '';
+                    if (e.target.closest('.cc-tip-btn')) {
                         e.stopPropagation();
-                        alert('继续阅读' + title);
+                        alert('打赏鼓励 ' + title + '\n感谢作者的创作，已送出鼓励！');
                         return;
                     }
-                    alert('打开连载' + title);
+                    // “继续阅读”按钮或点击卡片，均进入阅读页
+                    if (e.target.closest('.cc-btn') || e.target.closest('.continue-card')) {
+                        e.stopPropagation();
+                        window.location.href = 'reader.html?title=' + encodeURIComponent(title) + '&author=' + encodeURIComponent(author);
+                        return;
+                    }
                 });
             }
 
